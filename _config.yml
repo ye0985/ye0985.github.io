@@ -20,7 +20,7 @@ title                    : "꿈을 향한 나만의 공부노트"
 title_separator          : "-"
 subtitle                 : # site tagline that appears below site title in masthead
 name                     : "Yeji Shim"
-description              : "독일교수님도 못알아보는 나만의 "
+description              : "Hallo Welt"
 url                      : "https://ye0985.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
@@ -97,7 +97,7 @@ author:
   name             : "Yeji Shim"
   avatar           : # path of avatar image, e.g. "/assets/images/bio-photo.jpg"
   bio              : "I am an **developing** developer."
-  location         : "Berlin, Germany"
+  location         : "Berlin/Germany"
   email            :
   links:
     - label: "Email"
