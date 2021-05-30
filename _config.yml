@@ -117,7 +117,7 @@ author:
       # url: "https://github.com/"
     - label: "Instagram"
       icon: "fab fa-fw fa-instagram"
-       url: "https://www.instagram.com/yeji_by_sim/"
+      # url: "https://www.instagram.com/yeji_by_sim/"
 
 # Site Footer
 footer:
