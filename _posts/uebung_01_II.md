@@ -1,0 +1,986 @@
+<div style='display:block'>
+<div align='right' style='margin-bottom:20px; height:50px; width:1000px; background-color:#c50e1f;'></div>
+<div align='left' style=' position:relative; top:10px; margin:4px;'>
+<b>Technische Universität Berlin</b><br>
+<b>Fakultät Wirtschaft & Management</b><br>
+<b>Volkswirtschaftslehre und Wirtschaftsrecht</b><br>
+<b>Fachgebiet für Ökonometrie und Wirtschaftsstatistik</b><br>
+<b>Online R Labor Statistik II</b><br>
+</div><br>
+<img width='200' height='147' style='position:absolute; top:70px; right:9px;' src='https://tukuz.com/wp-content/uploads/2019/07/tu-berlin-technische-universitaet-berlin-logo-vector.png' alt='TUB' >
+<hr style='display:block;margin-bottom:20px; height:5px; position:relative; top:00px; width:1000px; background-color:#c50e1f; '>
+</div>
+
+
+```R
+mode(c("Roger", "Alpha", "NA", "Beta", "Gamma"))
+mode(mode(TRUE))
+is.na(as.logical("64"))
+1.5 == F
+all(seq(1,5,2) < 5)
+mode(which)
+```
+
+
+'character'
+
+
+
+'character'
+
+
+
+TRUE
+
+
+
+FALSE
+
+
+
+FALSE
+
+
+
+'function'
+
+
+# Übung_01_II (Datentypen, Logik in R, Datensätze)
+
+Um in späteren Arbeitsblättern erfolgreich Datenanalysen mit R durchzuführen, werden wir in dieser Übung die Grundlagen in R vertiefen. Wir werden hierfür die grundlegenden Datentypen in R kennenlernen und wie wir mit Hilfe von logischen Operationen Vektoren und ihren Index manipulieren können.
+Am Ende der Übung gibt es noch eine kurze Einführung zum Einlesen und Bearbeiten von Datensätzen in R.
+
+## Datentypen
+Variablen und Vektoren sind immer als ein bestimmter Datentyp definiert. Die drei wichtigsten Datentypen sind Sätze (character), Wahrheitswerte(logical) und Zahlen(numeric).
+Um den Datentyp einer Variable zu erfahren nutzt man die Funktion `mode()`. Mehr zu Datentypen findet ihr im "Wollschläger Kapitel 1.3.5".
+
+
+```R
+(satz <- "Ich bin ein Satz") #Buchstaben und Zeichenfolgen
+(bool <- TRUE) #logischer Ausdruck [wahr oder falsch]
+(num <- 51.63) #reelle und ganze Zahlen
+```
+
+
+'Ich bin ein Satz'
+
+
+
+TRUE
+
+
+
+51.63
+
+
+
+```R
+mode(satz)
+mode(bool)
+mode(num)
+```
+
+
+'character'
+
+
+
+'logical'
+
+
+
+'numeric'
+
+
+Um Variablen in einen anderen Datentyp umzuwandeln, wird die Funktion `as.` genutzt. Hierbei ist zu beachten, dass nicht alle Typen ineinander umgewandelt werden können.
+
+
+```R
+as.numeric(bool)
+as.character(num)
+
+a <- as.character(num)
+a
+a+6 # Fehler: die Variable a ist vom Datentyp "character"
+```
+
+
+1
+
+
+
+'51.63'
+
+
+
+'51.63'
+
+
+
+    Error in a + 6: nicht-numerisches Argument für binären Operator
+    Traceback:
+    
+
+
+### Datentypen in Vektoren
+
+Der Datentyp von Vektorinhalten muss nicht immer eine Zahl sein, sondern kann beliebig gewählt werden. Dabei muss der Datentyp von jedem Vektor jeweils eindeutig sein. <br>
+So ist es möglich, einen Vektor mit booleschen Ausdrücken (logical) oder Wörtern (character) zu erzeugen:
+
+
+```R
+namen <- c("Tom","Gabie","Steffan","Lisa")
+boolVec <- c(TRUE,FALSE,FALSE,TRUE,TRUE)
+namen; boolVec #Ausgabe der Vektoren
+
+numboolVec <- c("John", TRUE, "Ronald", 4, 6, FALSE)  
+# Hier werden automatisch alle Elemente des Vektor zu einem gemeinsamen Typ umgewandelt (in diesem Fall character)
+numboolVec
+```
+
+
+<ol class=list-inline>
+	<li>'Tom'</li>
+	<li>'Gabie'</li>
+	<li>'Steffan'</li>
+	<li>'Lisa'</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>'John'</li>
+	<li>'TRUE'</li>
+	<li>'Ronald'</li>
+	<li>'4'</li>
+	<li>'6'</li>
+	<li>'FALSE'</li>
+</ol>
+
+
+
+## Logische Funktionen
+
+Es existieren in R zwei logische Werte: `TRUE` (T) und `FALSE` (F) (die Großschreibung ist zu beachten). Mithilfe dieser Werte ist es möglich logsiche Aussagen über Daten zu treffen und in Funktionen zu verknüpfen.
+
+### Logische Vergleiche
+
+Um logische Aussagen zu verknüpfen, stehen drei Operationen zur Verfügung:
+- und (&)
+- oder (|)
+- nicht (!)
+
+
+```R
+T & T
+FALSE | TRUE
+TRUE  | FALSE
+!F & T
+FALSE & TRUE & T
+```
+
+
+TRUE
+
+
+
+TRUE
+
+
+
+TRUE
+
+
+
+TRUE
+
+
+
+FALSE
+
+
+### Logik in Vektoren
+
+Der Index eines Vektors kann auch logische Werte enthalten. Hierbei muss der Index jedoch als Vektor angegeben werden, da R sonst annimmt, dass es sich um eine mehrdimensionale Variable handelt. Ist er Indexvektor kürzer als die Variable, so wiederholt er sich automatisch selbst bis alle Werte abgefragt sind. <br>
+
+
+```R
+logVec <- c(5,1,8,9,10); logVec
+logVec[c(T,T,F,F,T)]
+logVec[c(T,F)] #automatische wiederholung des Indexvektors
+```
+
+
+<ol class=list-inline>
+	<li>5</li>
+	<li>1</li>
+	<li>8</li>
+	<li>9</li>
+	<li>10</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>5</li>
+	<li>1</li>
+	<li>10</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>5</li>
+	<li>8</li>
+	<li>10</li>
+</ol>
+
+
+
+Die Funktion `all()` bestimmt, ob alle Werte des Vektors wahr sind. Die Funktion `any()` gibt an, ob mindestens ein Element wahr ist: 
+
+
+```R
+bool <- c(T,T,F,FALSE,TRUE)
+all(bool)
+any(bool)
+```
+
+
+FALSE
+
+
+
+TRUE
+
+
+### Numerische Logik
+
+Es ist möglich mit Hilfe von Vergleichsoperationen numerische Werte logisch zu vergleichen:
+<details>
+  <summary>
+      $Hinweis\ (klick\ mich):$ </summary>
+      
+ Als Hilfestellung könnt ihr "J.Groß - Kapitel 4.7" nachschlagen.
+
+</details>
+
+
+```R
+4 == 9  # 4 gleich 9? 
+2 != 3  # 42 ungleich 3?
+1 < 8   #  1 kleiner 8?
+3 > 3   # 3 größter 3?
+3 >= 3  # 3 größergleich 3?
+5 <= 10 # 5 kleinergleich 10?
+```
+
+
+FALSE
+
+
+
+TRUE
+
+
+
+TRUE
+
+
+
+FALSE
+
+
+
+TRUE
+
+
+
+TRUE
+
+
+Vergleichsoperationen können auch für Vektoren genutzt werden. Dabei wird jedes Element des Vektors einzeln verglichen:
+
+
+```R
+logVec
+logVec < 4 # behandelt jedes Element von logVec
+logVec == logVec
+```
+
+
+<ol class=list-inline>
+	<li>5</li>
+	<li>1</li>
+	<li>8</li>
+	<li>9</li>
+	<li>10</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>FALSE</li>
+	<li>FALSE</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+</ol>
+
+
+
+Für numerische Zahlen gilt   True == 1 und False == 0:
+
+
+```R
+1 == T          # 1 gleich wahr?
+0 == F          # 0 gleich Falsch?
+4 == F | 4 == T # 4 gleich Falsch oder Wahr?
+T != 0          # Wahr ungleich 0?
+```
+
+
+TRUE
+
+
+
+TRUE
+
+
+
+FALSE
+
+
+
+TRUE
+
+
+Eine Verknüpfung mit numerischen Werten ist auch möglich:
+
+
+```R
+(logVec[5] > 5) & (logVec[1] != 4)
+(logVec !=1) & TRUE
+```
+
+
+TRUE
+
+
+
+<ol class=list-inline>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+</ol>
+
+
+
+## NA Werte
+
+Bei der Verarbeitung mancher Dateien passiert es, als unerwartetes Ergebnis <NA\> zu erhalten: <br>
+
+
+```R
+(vec <- c(rep(c(1,2),2)))
+vec[5] #Wert an der 5. Stelle des Vectors
+```
+
+
+<ol class=list-inline>
+	<li>1</li>
+	<li>2</li>
+	<li>1</li>
+	<li>2</li>
+</ol>
+
+
+
+
+&lt;NA&gt;
+
+
+Es handelt sich hierbei um so genannte ,,not available'' Daten. Um zu testen ob der Datensatz `NA` Werte enthält, werden die logischen Funktion `is.na()` oder `anyNA()` genutzt:  
+
+
+```R
+(vecNa <- c(4, NA, 7, 3, NA, NA, 9)) #Vektor erschaffen
+is.na(vecNa) #sind die einzelnen Werte NA?
+anyNA(vecNa) #gibt es NA?
+```
+
+
+<ol class=list-inline>
+	<li>4</li>
+	<li>&lt;NA&gt;</li>
+	<li>7</li>
+	<li>3</li>
+	<li>&lt;NA&gt;</li>
+	<li>&lt;NA&gt;</li>
+	<li>9</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>FALSE</li>
+</ol>
+
+
+
+
+TRUE
+
+
+#### Vektoren von NA bereinigen
+Es ist möglich Daten und Vektoren von NA Werten zu bereinigen, könnt ihr in vielen Funktionen das Argument *'rm.NA = TRUE'* nutzen. Eine Alternative ist mit Hilfe von logischen Funktionen und den Vektorindex den Vektor zu säubern. <br>
+
+
+```R
+vecNA <- c(4, NA, 9, NA, NA, 0)
+
+vecNA[!is.na(vecNA)] # ohne NA Werte
+vecNA                # mit NA Werten
+```
+
+
+<ol class=list-inline>
+	<li>4</li>
+	<li>9</li>
+	<li>0</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>4</li>
+	<li>&lt;NA&gt;</li>
+	<li>9</li>
+	<li>&lt;NA&gt;</li>
+	<li>&lt;NA&gt;</li>
+	<li>0</li>
+</ol>
+
+
+
+## Datensätze einlesen
+
+### Bestimmen des Dateipfades
+
+Um Daten aus externen Dokumenten einzulesen, muss zuerst für R definiert werden, wo ich sich die auszulesenden Daten befinden. <br>
+Datensätze können ist verschiedensten Daten-Formaten gespeichert sein. Wir werden zwei Methoden kennenlernen um diese Dateien als Datensätze einzulesen. Es wird sehr empfohlen die R (Help)-Dokumentationen zu beiden Formaten begleitend zu lesen!
+
+
+#### Aktuellen Dateipfad ausgeben
+
+Durch `getwd()` wird der aktuelle Arbeitsplatz(work dictionary) angeben aus dem R alle Daten einliest:
+
+
+```R
+getwd()
+```
+
+
+'C:/Users/t.hainbach/Documents/Lehre/Online R Labor/SS 2021/Statistik_II/uebung_01_II'
+
+
+#### Datenpfad ändern
+Mit Hilfe der Funktion `setwd(Data/Path/...)` kann der Dateipfad geändert werden. <br>
+**Hinweis:** Es ist zu beachten das der Trennstrich der Arbeitsverzeichnis ein **'$/$'** (Slash) und kein **'$\backslash$'** (Backslash) ist. Zusätzlich muss der Datenpfad in Anführungszeichen stehen!<br>
+Versuche den Dateipfad zum Ordner zu wechseln, in welchem du deine "JupiterHub-Dateien" speicherst. 
+
+
+```R
+# Beispielpfad. Muss für eigenen Rechner angepasst werden!
+wd <- getwd()
+setwd(wd)
+wd
+```
+
+
+'C:/Users/t.hainbach/Documents/Lehre/Online R Labor/SS 2021/Statistik_II/uebung_01_II'
+
+
+### Text Dateien
+
+Ein einfacher Weg Datensätze zu schreiben und in R einzulesen ist durch *.txt* Dateien. Der Aufbau einer Textdatei entspricht einer einfachen "Spalten Matrix". Für einen besseren Überblick könnt ihr euch die Textdatei vorher selbst öffnen und anschauen.
+Durch `read.table()` werden Daten von Textdokumenten geladen und als Datensatz ausgegeben.
+
+$>\ read.table(file=\textit{"Dateiname.txt"},\ header=\textit{FALSE},\ sep=\textit{"Trennzeichen"},\ dec=\textit{'.'},\ stringsAsFactors=\textit{TURE})$
+
+- Mit *file* wird der Dateiname angegeben (Bsp: "Zoo.txt"), der Dateiname muss in Anführungszeichen stehen. Achtet darauf das Dateiformat *(.txt)* hinter den Dateinamen zu scheiben.
+- *header* (logical) entscheidet, ob die erste Zeile der Tabelle für die Variablennamen oder als Daten gezählt wird. 
+- *sep* bestimmt das Trennzeichen der Daten. Bei Trennung der Daten mit einem oder mehr Leerzeichen, muss *sep=""* angegeben werden. Das Argument *sep* muss immer in Anführungszeichen stehen.
+- Das Argument *dec* bestimmt das Dezimaltrennzeichen für alle Zahlen. *dec* muss immer in Anführungszeichen stehen.
+- *stringsAsFactors* (logical) ist schon aus dem Datensatzkapitel bekannt. Es verhindert die automatische Umwandung aller Strings (Wörter-Datentyp) zu Objekten der Klasse *factor*.
+<br>
+
+Wenn bestimme Argumente nicht genannt werden, nehmen sie ihren Standartwert an. Die Standartwerte sind in der R-Dokumentation unter `help(read.table)` zu finden.
+Denkt daran auf beim Einlesen den korrekten Dateipfad anzugeben. <br>
+**Beispiel** mit Datei "TU_Berlin.txt":
+
+
+```R
+# help(read.table) #Dokumentation
+
+getwd() #überprüfen, ob der Dateipfad korrekt ist
+setwd("C:/Users/t.hainbach/Documents/Lehre/Online R Labor/SS 2021/Statistik_II/uebung_01_II") 
+# für eigenen Rechner anpassen!
+
+textDaten <- read.table(file="TU_Berlin.txt",header=T, sep="", stringsAsFactors=F)
+textDaten # Ausgabe des Datensatz
+```
+
+
+'C:/Users/t.hainbach/Documents/Lehre/Online R Labor/SS 2021/Statistik_II/uebung_01_II'
+
+
+
+<table>
+<caption>A data.frame: 10 × 4</caption>
+<thead>
+	<tr><th></th><th scope=col>Name</th><th scope=col>Matrikelnummer</th><th scope=col>Studiengang</th><th scope=col>Fachstmester</th></tr>
+	<tr><th></th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>Zahid</th><td>Wallis  </td><td>391451</td><td>Wi.Ing.   </td><td>3</td></tr>
+	<tr><th scope=row>Sol</th><td>Ellwood </td><td>405612</td><td>Physik    </td><td>2</td></tr>
+	<tr><th scope=row>Kain</th><td>Mueller </td><td>364751</td><td>Wi.Ing.   </td><td>5</td></tr>
+	<tr><th scope=row>Esa</th><td>Boyce   </td><td>385969</td><td>Mathematik</td><td>3</td></tr>
+	<tr><th scope=row>Bobbie</th><td>Power   </td><td>391235</td><td>Economic  </td><td>1</td></tr>
+	<tr><th scope=row>Coby</th><td>Marriott</td><td>396013</td><td>Wi.Ing.   </td><td>6</td></tr>
+	<tr><th scope=row>Vanessa</th><td>Hopper  </td><td>405120</td><td>Economic  </td><td>3</td></tr>
+	<tr><th scope=row>Abbie</th><td>Farrell </td><td>394502</td><td>Wi.Ing.   </td><td>2</td></tr>
+	<tr><th scope=row>Graham</th><td>Denton  </td><td>394122</td><td>Wi.Ing.   </td><td>4</td></tr>
+	<tr><th scope=row>Charlie</th><td>Robbins </td><td>352619</td><td>MINT-gruen</td><td>1</td></tr>
+</tbody>
+</table>
+
+
+
+### CSV Dateien
+Bei dem zweiten Datenformat handelt es sich um *.csv* (comma separated values). CSV ist sehr verbreitet und wird unter anderem auch beim Erstellen von Exeltabellen genutzt. Im *.csv* Format werden die Daten in Zeilen durch ein festgelegtes Zeichen (meistens ein Komma) getrennt.
+Der Befehl zum Auslesen von CSV-Daten ist `read.csv()`.
+
+$>\ read.csv(file=\textit{"Dateiname.csv"},\ header=\textit{TRUE},\ sep=\textit{","},\ dec=\textit{'.'},\ stringsAsFactors=\textit{TURE})$
+
+- Mit *file* wird der Dateiname angegeben (Bsp: "TU_Berlin.csv"), der Dateiname muss in Anführungszeichen stehen. Achtet darauf das Dateiformat *(.csv)* hinter den Dateinamen zu scheiben.
+- *header* (logical) entscheidet, ob die erste Zeile der Daten für die Variablennamen oder als Datensatz gezählt wird. 
+- *sep* bestimmt das Trennzeichen der Daten. Im *.csv* Format wird standartmäßig mit einem Komma getrennt.
+- *dec* bestimmt das Dezimaltrennzeichen für alle Zahlen. *dec* muss immer in Anführungszeichen stehen.
+- stringsAsFactors* (logical) ist schon aus dem Datensatzkapitel bekannt. Es verhindert die automatische Umwandung aller Strings (Wörter-Datentyp) zu Objekten der Klasse *factor*.
+
+Wenn bestimme Argumente nicht genannt werden, nehmen sie ihren Standartwert an. Die Standartwerte sind in der R-Dokumentation unter `help(read.csv)` zu finden. <br>
+**Bsp mit Datei "TU_Berlin.csv":**
+
+
+```R
+# help(read.csv) #Dokumentation
+
+getwd() #überprüfen, ob der Dateipfad korrekt ist
+setwd("C:/Users/t.hainbach/Documents/Lehre/Online R Labor/SS 2021/Statistik_II/uebung_01_II") #für eigenen Rechner anpassen!
+
+textDaten <- read.csv(file="TU_Berlin.csv",header=T, sep=",", stringsAsFactors=F)
+textDaten #Ausgabe des Datensatz
+```
+
+
+'C:/Users/t.hainbach/Documents/Lehre/Online R Labor/SS 2021/Statistik_II/uebung_01_II'
+
+
+
+<table>
+<caption>A data.frame: 10 × 4</caption>
+<thead>
+	<tr><th scope=col>Name</th><th scope=col>Matrikelnummer</th><th scope=col>Studiengang</th><th scope=col>Fachstmester</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;int&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Wallis  </td><td>391451</td><td>Wi.Ing.   </td><td>3</td></tr>
+	<tr><td>Ellwood </td><td>405612</td><td>Physik    </td><td>2</td></tr>
+	<tr><td>Mueller </td><td>364751</td><td>Wi.Ing.   </td><td>5</td></tr>
+	<tr><td>Boyce   </td><td>385969</td><td>Mathematik</td><td>3</td></tr>
+	<tr><td>Power   </td><td>391235</td><td>Economic  </td><td>1</td></tr>
+	<tr><td>Marriott</td><td>396013</td><td>Wi.Ing.   </td><td>6</td></tr>
+	<tr><td>Hopper  </td><td>405120</td><td>Economic  </td><td>3</td></tr>
+	<tr><td>Farrell </td><td>394502</td><td>Wi.Ing.   </td><td>2</td></tr>
+	<tr><td>Denton  </td><td>394122</td><td>Wi.Ing.   </td><td>4</td></tr>
+	<tr><td>Robbins </td><td>352619</td><td>MINT-gruen</td><td>1</td></tr>
+</tbody>
+</table>
+
+
+
+## Datensätze
+
+Datensätze werden in R durch die Datenstruktur *data.frame* repräsentiert. Sie bestehen aus verschiedenen Variablen, die jeweils einer Menge Komponenten zugeordnet sind. Die Komponenten sind vergleichbar zu Spalten einer Matrix. Komponenten eines Datensatzes müssen alle die selbe Länge haben. <br>
+Datensätze werden einfach erzeugt mit `data.frame(Vektor, Vektor, ... )` <br>
+
+
+```R
+#Beispieldaten erstellen
+Name <- c("Tom","Nina","John","Alex","Ron","Jule")
+Alter <- c(21,25,19,22,30,27)
+Geschlecht <- c("m","w","m","m","m","w")
+Ledig <- c(T,F,T,T,F,T)
+Größe <- c(1.90,1.54,1.78,1.73,1.67,1.81)
+
+#Datensatz erstellen:
+( datenSatz <- data.frame(Name,Alter,Geschlecht,Ledig,Größe) )
+```
+
+
+<table>
+<caption>A data.frame: 6 × 5</caption>
+<thead>
+	<tr><th scope=col>Name</th><th scope=col>Alter</th><th scope=col>Geschlecht</th><th scope=col>Ledig</th><th scope=col>Größe</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;lgl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Tom </td><td>21</td><td>m</td><td> TRUE</td><td>1.90</td></tr>
+	<tr><td>Nina</td><td>25</td><td>w</td><td>FALSE</td><td>1.54</td></tr>
+	<tr><td>John</td><td>19</td><td>m</td><td> TRUE</td><td>1.78</td></tr>
+	<tr><td>Alex</td><td>22</td><td>m</td><td> TRUE</td><td>1.73</td></tr>
+	<tr><td>Ron </td><td>30</td><td>m</td><td>FALSE</td><td>1.67</td></tr>
+	<tr><td>Jule</td><td>27</td><td>w</td><td> TRUE</td><td>1.81</td></tr>
+</tbody>
+</table>
+
+
+
+#### Überblick verschaffen
+Für eine schnelle Zusammenfassung aller Daten kann die Funktion `str()` genutzt werden. So erfahrt ihr die Dimensionen des Datensatzes und die Datentypen der einzelnen Komponenten. Bei langen Datensätzen kann die Funktion `head()` genutzt werden, um die ersten Zeilen des Datensatz einzulesen. <br>
+Die Zeilen- und Spaltenlänge wird durch `ncol()` und `nrow()` ermittelt.
+
+
+```R
+str(datenSatz)
+head(datenSatz) #Testdatensatz ist nicht lang genug um den Unterschied zu sehen
+nrow(datenSatz)
+ncol(datenSatz)
+```
+
+
+    Error in str(datenSatz): 객체 'datenSatz'를 찾을 수 없습니다
+    Traceback:
+    
+
+    1. str(datenSatz)
+
+
+Durch `str()` erkennt man, dass `data.frame()` alle Komponenten vom Datentyp *character* in ein *factor* Objekt umgewandelt hat. Um dies zu verhindern könnt ihr als Argument '*stringsAsFactors=FALSE*' setzen <br> 
+
+
+```R
+str(data.frame(Name,Alter,Geschlecht,stringsAsFactors=FALSE))
+```
+
+    'data.frame':	6 obs. of  3 variables:
+     $ Name      : chr  "Tom" "Nina" "John" "Alex" ...
+     $ Alter     : num  21 25 19 22 30 27
+     $ Geschlecht: chr  "m" "w" "m" "m" ...
+    
+
+#### Daten ergänzen
+Falls ihr nachträglich eine Komponente in euren Datensatz hinzuzufügen wollt, könnt ihr die Funktion `cbind()` nutzen:
+
+
+```R
+#zusätzliche Daten
+Gewicht <- c(94,63,71,75,80,73) 
+
+#Komponente ergänzen
+cbind(datenSatz, Gewicht)
+```
+
+
+<table>
+<caption>A data.frame: 6 × 6</caption>
+<thead>
+	<tr><th scope=col>Name</th><th scope=col>Alter</th><th scope=col>Geschlecht</th><th scope=col>Ledig</th><th scope=col>Größe</th><th scope=col>Gewicht</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;lgl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Tom </td><td>21</td><td>m</td><td> TRUE</td><td>1.90</td><td>94</td></tr>
+	<tr><td>Nina</td><td>25</td><td>w</td><td>FALSE</td><td>1.54</td><td>63</td></tr>
+	<tr><td>John</td><td>19</td><td>m</td><td> TRUE</td><td>1.78</td><td>71</td></tr>
+	<tr><td>Alex</td><td>22</td><td>m</td><td> TRUE</td><td>1.73</td><td>75</td></tr>
+	<tr><td>Ron </td><td>30</td><td>m</td><td>FALSE</td><td>1.67</td><td>80</td></tr>
+	<tr><td>Jule</td><td>27</td><td>w</td><td> TRUE</td><td>1.81</td><td>73</td></tr>
+</tbody>
+</table>
+
+
+
+### Den Index nutzen
+
+Durch den Index der Datensätze können alle Zeilen, Spalten oder auch einzelne Elemente ausgegeben werden. <br>
+Der Index ist zweidimensional und wird durch ein Komma getrennt \[Zeilen,Spalten\]. Um mehrere Spalten und Zeilen auszugeben, müssen diese als Vektor beschrieben werden. <br>
+Für eine einfachere und schnellere Ausgabe kann auch der `$` Operator genutzt werden. Mit ihm können Spalten ausgegeben werden. <br>
+
+
+```R
+#Zeile ausgeben
+datenSatz[,5]
+datenSatz[,"Ledig"] #oder mit Variablennamen
+
+#Spalten augeben
+datenSatz[c(1,5)]
+
+#einzellnen Wert ausgeben
+datenSatz[2,5]
+
+# '$' Operator
+datenSatz$Ledig
+```
+
+
+<ol class=list-inline>
+	<li>1.9</li>
+	<li>1.54</li>
+	<li>1.78</li>
+	<li>1.73</li>
+	<li>1.67</li>
+	<li>1.81</li>
+</ol>
+
+
+
+
+<ol class=list-inline>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+</ol>
+
+
+
+
+<table>
+<caption>A data.frame: 6 × 2</caption>
+<thead>
+	<tr><th scope=col>Name</th><th scope=col>Größe</th></tr>
+	<tr><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>Tom </td><td>1.90</td></tr>
+	<tr><td>Nina</td><td>1.54</td></tr>
+	<tr><td>John</td><td>1.78</td></tr>
+	<tr><td>Alex</td><td>1.73</td></tr>
+	<tr><td>Ron </td><td>1.67</td></tr>
+	<tr><td>Jule</td><td>1.81</td></tr>
+</tbody>
+</table>
+
+
+
+
+1.54
+
+
+
+<ol class=list-inline>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+	<li>TRUE</li>
+	<li>FALSE</li>
+	<li>TRUE</li>
+</ol>
+
+
+
+### Teilmengen auwählen
+
+Die Funktion `subset()` ermöglicht es bei der Analyse eines Datensatzes einen bestimmte Teilmenge auszulesen.
+
+$ >\ subset(x=\textit{'Datensatz'},\ subset=\textit{'boolZeilen'},\ select=\textit{'Spalten'}) $
+
+Mit dem Argument *subset* werden durch einen logischen Vergleich die Zeilen bestimmt. Durch *select* können als Vektor die Spalten ausgewählt werden. <br>
+
+
+```R
+subset(datenSatz,subset=(Größe > 1.60) ,select = c(1:2,5))
+subset(datenSatz,subset=(Geschlecht == "m") ,select = c(-4)) #nur männer; ohne die 4.Spalte
+subset(datenSatz ,select = c(Größe,Alter)) #Spalten größe und Alter
+subset(datenSatz, Alter < 25) #alle unter 25 Jahre
+```
+
+
+<table>
+<caption>A data.frame: 5 × 3</caption>
+<thead>
+	<tr><th></th><th scope=col>Name</th><th scope=col>Alter</th><th scope=col>Größe</th></tr>
+	<tr><th></th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>Tom </td><td>21</td><td>1.90</td></tr>
+	<tr><th scope=row>3</th><td>John</td><td>19</td><td>1.78</td></tr>
+	<tr><th scope=row>4</th><td>Alex</td><td>22</td><td>1.73</td></tr>
+	<tr><th scope=row>5</th><td>Ron </td><td>30</td><td>1.67</td></tr>
+	<tr><th scope=row>6</th><td>Jule</td><td>27</td><td>1.81</td></tr>
+</tbody>
+</table>
+
+
+
+
+<table>
+<caption>A data.frame: 4 × 4</caption>
+<thead>
+	<tr><th></th><th scope=col>Name</th><th scope=col>Alter</th><th scope=col>Geschlecht</th><th scope=col>Größe</th></tr>
+	<tr><th></th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>Tom </td><td>21</td><td>m</td><td>1.90</td></tr>
+	<tr><th scope=row>3</th><td>John</td><td>19</td><td>m</td><td>1.78</td></tr>
+	<tr><th scope=row>4</th><td>Alex</td><td>22</td><td>m</td><td>1.73</td></tr>
+	<tr><th scope=row>5</th><td>Ron </td><td>30</td><td>m</td><td>1.67</td></tr>
+</tbody>
+</table>
+
+
+
+
+<table>
+<caption>A data.frame: 6 × 2</caption>
+<thead>
+	<tr><th scope=col>Größe</th><th scope=col>Alter</th></tr>
+	<tr><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>1.90</td><td>21</td></tr>
+	<tr><td>1.54</td><td>25</td></tr>
+	<tr><td>1.78</td><td>19</td></tr>
+	<tr><td>1.73</td><td>22</td></tr>
+	<tr><td>1.67</td><td>30</td></tr>
+	<tr><td>1.81</td><td>27</td></tr>
+</tbody>
+</table>
+
+
+
+
+<table>
+<caption>A data.frame: 3 × 5</caption>
+<thead>
+	<tr><th></th><th scope=col>Name</th><th scope=col>Alter</th><th scope=col>Geschlecht</th><th scope=col>Ledig</th><th scope=col>Größe</th></tr>
+	<tr><th></th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;fct&gt;</th><th scope=col>&lt;lgl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>1</th><td>Tom </td><td>21</td><td>m</td><td>TRUE</td><td>1.90</td></tr>
+	<tr><th scope=row>3</th><td>John</td><td>19</td><td>m</td><td>TRUE</td><td>1.78</td></tr>
+	<tr><th scope=row>4</th><td>Alex</td><td>22</td><td>m</td><td>TRUE</td><td>1.73</td></tr>
+</tbody>
+</table>
+
+
+
+
+# Übungsaufgaben_01_II
+
+### 1. Logische Funktionen
+
+Folgende Entscheidung soll mit Hilfe von logischen Funktionen nachgebaut werden. Es geht um die Entscheidung, ob man mit Auto zur Universität fährt oder nicht.
+
+*    Ein Auto kann nur genutzt werden, wenn es vorhanden ist (Variable Auto $\in \{Ja,Nein\}$).
+*    Bei einer Entfernung von unter einem Kilometer wird immer auf das Auto verzichtet.
+*    Ist die Entfernung größer als 50 km oder die Zeit der Alternative ÖPNV größer als 2 Stunden, wird immer das Auto genutzt (sofern vorhanden).
+
+
+1. Generiere die 3 Variablen "auto_vorhanden", "entfernung" und "zeit_oepnv" und fülle sie mit den entsprechenden für dich geltenden Werten.
+- Erstelle für jede der 3 oben genannten Bedingungen eine Variable, die entweder wahr (Bedingung erfüllt) oder falsch (Bedingung nicht erfüllt) sein kann.
+- Kombiniere die Bedingungen in der boolschen Variable "auto", welche für gegebene Werte von "auto_vorhanden", "entfernung" und "zeit_oepnv" entweder wahr (Entscheidung: mit Auto zur Uni) oder falsch (Entscheidung: nicht mit Auto zur Uni) ist.
+
+
+```R
+#1.1 beliebig
+auto_vorhanden <- FALSE #T oder F
+entfernung <- 2 #in km
+zeit_oepnv <- 25 #in Minuten
+
+mode(auto_vorhanden)
+mode(entfernung)
+mode(zeit_oepnv)
+
+#1.2 was muss gelten, damit ich mit Auto zur Uni fahre?
+bedingung1 <- auto_vorhanden
+bedingung2 <- !(entfernung < 1)
+bedingung3 <- entfernung> 50 | zeit_oepnv > 120
+
+#1.3 Fahre ich mit Auto zur Uni?
+auto <- bedingung1 & bedingung2 & bedingung3
+if(auto == true){
+    print("Ich fahre mit Auto zur Uni!")
+}else{
+    print("Ich fahre nicht mit Auto zur Uni!")
+}
+```
+
+
+'logical'
+
+
+
+'numeric'
+
+
+
+'numeric'
+
+
+
+    Error in eval(expr, envir, enclos): 객체 'true'를 찾을 수 없습니다
+    Traceback:
+    
+
+
+### 2. Endenergieverbrauch privater Haushalte
+
+1. Lese den Datensatz "endenergieverbrauch_private_haushalte.csv" ein.
+- Wie viele Variablen enthält der Datensatz?
+- Was ist die Beobachtungseinheit des Datensatzes?
+- Wie viele Terawattstunden wurden 2018 insgesamt von privaten Haushalten in Deutschland verbraucht?
+- Welchen Anteil am Gesamt-Endenergieverbrauch privater Haushalte hat Strom in den Jahren 1990 und 2018?
+- Generiere eine zusätzliche Variable "anteil_mineraloele", welche für jedes Jahr den Anteil von Mineralölen am Endenergieverbrauch privater Haushalte enthält. Füge diese Variable dem Originaldatensatz hinzu.
+- In Deutschland wird immer weniger mit Öl geheizt. Wie hoch war der durchschnittliche Anteil von Mineralölen am Endenergieverbrauch  in den Jahren 1990-1999 im Vergleich zu den Jahren 2009-2018? Hinweis: Nutze für die Ermittlung von Mittelwerten die Funktion `mean()`.
+- Erstelle einen neuen Datensatz, der nur Jahre beinhaltet, wo mehr als 40 TWh erneuerbare Wärme und mehr als 140 TWh Strom verbraucht wurden. Der Datensatz soll außerdem nur die 3 Variablen "jahr", "strom", "erneuerbare_waerme" enthalten.
